@@ -46,41 +46,37 @@ section "install"
 	setOutPath $INSTDIR
 	# Files added here should be removed by the uninstaller (see section "uninstall")
 	file "PathfinderSociety.jpeg"
-    file "launcher.exe"
+    file "build\launch4j\PFScode.exe"
 
 	setOutPath $INSTDIR\lib
-    file "lib\cglib-nodep-2.1_3.jar"
-    file "lib\commons-codec-1.10.jar"
-	file "lib\commons-exec-1.3.jar"
-	file "lib\commons-io-2.4.jar"
-	file "lib\commons-lang3-3.4.jar"
-	file "lib\commons-logging-1.2.jar"
-	file "lib\cssparser-0.9.18.jar"
-	file "lib\gson-2.3.1.jar"
-	file "lib\htmlunit-2.21.jar"
-	file "lib\htmlunit-core-js-2.17.jar"
-	file "lib\htmlunit-driver-2.21.jar"
-	file "lib\httpclient-4.5.2.jar"
-	file "lib\httpcore-4.4.4.jar"
-	file "lib\httpmime-4.5.2.jar"
-	file "lib\jetty-io-9.2.15.v20160210.jar"
-	file "lib\jetty-util-9.2.15.v20160210.jar"
-	file "lib\jna-4.1.0.jar"
-	file "lib\jna-platform-4.1.0.jar"
-	file "lib\jsoup-1.7.2.jar"
-	file "lib\neko-htmlunit-2.21.jar"
-	file "lib\PFScode.jar"
-	file "lib\sac-1.3.jar"
-	file "lib\selenium-api-2.53.1.jar"
-	file "lib\selenium-chrome-driver-2.53.1.jar"
-	file "lib\selenium-remote-driver-2.53.1.jar"
-	file "lib\serializer-2.7.2.jar"
-	file "lib\websocket-api-9.2.15.v20160210.jar"
-	file "lib\websocket-client-9.2.15.v20160210.jar"
-	file "lib\websocket-common-9.2.15.v20160210.jar"
-	file "lib\xalan-2.7.2.jar"
-	file "lib\xercesImpl-2.11.0.jar"
-	file "lib\xml-apis-1.4.01.jar"
+    file "build\launch4j\lib\commons-codec-1.10.jar"
+	file "build\launch4j\lib\commons-collections-3.2.2.jar"
+	file "build\launch4j\lib\commons-io-2.4.jar"
+	file "build\launch4j\lib\commons-lang3-3.4.jar"
+	file "build\launch4j\lib\commons-logging-1.2.jar"
+	file "build\launch4j\lib\cssparser-0.9.18.jar"
+	file "build\launch4j\lib\gson-2.3.1.jar"
+	file "build\launch4j\lib\guava-19.0.jar"
+	file "build\launch4j\lib\htmlunit-2.21.jar"
+	file "build\launch4j\lib\htmlunit-core-js-2.17.jar"
+	file "build\launch4j\lib\htmlunit-driver-2.21.jar"
+	file "build\launch4j\lib\httpclient-4.5.2.jar"
+	file "build\launch4j\lib\httpcore-4.4.4.jar"
+	file "build\launch4j\lib\httpmime-4.5.2.jar"
+	file "build\launch4j\lib\jetty-io-9.2.15.v20160210.jar"
+	file "build\launch4j\lib\jetty-util-9.2.15.v20160210.jar"
+	file "build\launch4j\lib\jsoup-1.7.2.jar"
+	file "build\launch4j\lib\neko-htmlunit-2.21.jar"
+	file "build\launch4j\lib\PFScode.jar"
+	file "build\launch4j\lib\sac-1.3.jar"
+	file "build\launch4j\lib\selenium-api-2.53.1.jar"
+	file "build\launch4j\lib\serializer-2.7.2.jar"
+	file "build\launch4j\lib\websocket-api-9.2.15.v20160210.jar"
+	file "build\launch4j\lib\websocket-client-9.2.15.v20160210.jar"
+	file "build\launch4j\lib\websocket-common-9.2.15.v20160210.jar"
+	file "build\launch4j\lib\xalan-2.7.2.jar"
+	file "build\launch4j\lib\xercesImpl-2.11.0.jar"
+	file "build\launch4j\lib\xml-apis-1.4.01.jar"
 
 	# Add any other files for the install directory (license files, app data, etc) here
 
@@ -89,7 +85,7 @@ section "install"
 
 	# Start Menu
 	createDirectory "$SMPROGRAMS\${COMPANYNAME}"
-	createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\launch.exe" "" "$INSTDIR\logo.ico"
+	createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\PFScode.exe" "" "$INSTDIR\logo.ico"
 
 	# Registry information for add/remove programs
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayName" "${COMPANYNAME} - ${APPNAME} - ${DESCRIPTION}"
@@ -131,9 +127,8 @@ section "uninstall"
 	rmDir "$SMPROGRAMS\${COMPANYNAME}"
 
 	# Remove files
-	delete $INSTDIR\app.exe
 	delete $INSTDIR\PathfinderSociety.jpeg
-    delete $INSTDIR\launcher.exe
+    delete $INSTDIR\PFScode.exe
     delete $INSTDIR\lib\cglib-nodep-2.1_3.jar.jar
     delete $INSTDIR\commons-codec-1.10.jar
 	delete $INSTDIR\lib\commons-exec-1.3.jar
