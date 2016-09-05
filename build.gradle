@@ -1,0 +1,36 @@
+plugins{
+    id "edu.sc.seis.launch4j" version "1.6.2"
+}
+
+apply plugin: 'application'
+apply plugin: 'idea'
+
+mainClassName = "Main"
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+        attributes 'Class-path': ". ./lib"
+    }
+}
+
+task runDebug(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    setDebug(true)
+    main = mainClassName
+}
+
+repositories {
+    mavenCentral()
+}
+
+launch4j {
+    mainClassName = "Main"
+}
+
+dependencies
+{
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
+    compile group: 'org.seleniumhq.selenium', name: 'htmlunit-driver', version: '2.21'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.53.1'
+}
