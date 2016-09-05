@@ -3,7 +3,7 @@
 * @Date:   2016-04-06T19:54:42+10:00
 * @Email:  phillip@philderbeast.com
 * @Last modified by:   Phillip Ledger
-* @Last modified time: 2016-08-29T20:59:12+10:00
+* @Last modified time: 2016-09-05T19:13:26+10:00
 */
 
 package com.philderbeast.pfstool;
@@ -37,25 +37,6 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 	JMenuItem miUpdateAll, miDisPlayer, miFindScenario, miDisPrevYear, miDisConventions, miDisVenue;
 	JMenuItem miAbout;
 
-	static final String NEW = "new";
-	static final String LOAD = "load";
-	static final String SAVE = "save";
-	static final String ABOUT = "about";
-	static final String ESC = "ESC";
-	static final String CLOSE = "close";
-	static final String FIN = "finish";
-	static final String ADDVEN = "AddVenue";
-	static final String RENAME = "Rename";
-	static final String MOVE = "Move";
-	static final String ADDEVT = "AddEvent";
-	static final String UPDATEPLYR = "UpdatePlayer";
-	static final String ADDPLYR = "AddPlayer";
-	static final String DISPLYR = "DisPlyr";
-	static final String FIND = "FindScenario";
-	static final String DISYR = "DisYear";
-	static final String DISCON = "DisCon";
-	static final String DISVEN = "DisVenue";
-
 	public static void main(String[] args){
 		PFSOrganiserTool tool = new PFSOrganiserTool();
 	}
@@ -74,42 +55,9 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 		helpMenu();
 		setJMenuBar(mb);
 
-		//Setup the panels
-		//Initial Panel
-		JButton jbNew = new JButton("New Region");
-		jbNew.setActionCommand(NEW);
-		jbNew.addActionListener(this);
-
-		JButton jbLoad = new JButton("Load Region");
-		jbLoad.setActionCommand(LOAD);
-		jbLoad.addActionListener(this);
-
-		JButton jbClose = new JButton("Close");
-		jbClose.setActionCommand(ESC);
-		jbClose.addActionListener(this);
-
-		LoadImage imgLogo = new LoadImage("PathfinderSociety.jpeg");
-		initPanel.addComponent(imgLogo,0,0,5,3,1,1,GridBagConstraints.NONE,GridBagConstraints.CENTER);
-		initPanel.addComponent(jbNew,0,7,1,1,1,1,GridBagConstraints.NONE,GridBagConstraints.CENTER);
-		initPanel.addComponent(jbLoad,2,7,1,1,1,1,GridBagConstraints.NONE,GridBagConstraints.CENTER);
-		initPanel.addComponent(jbClose,4,7,1,1,1,1,GridBagConstraints.NONE,GridBagConstraints.CENTER);
-
-		//New Region Panel
-		JButton jbNext = new JButton("Finish");
-		jbNext.setActionCommand(FIN);
-		jbNext.addActionListener(this);
-
-		JButton jbCancel = new JButton("Close");
-		jbCancel.setActionCommand(ESC);
-		jbCancel.addActionListener(this);
-
-		JButton jbBack = new JButton("Back");
-		jbBack.setActionCommand(CLOSE);
-		jbBack.addActionListener(this);
-
-		newPanel.addComponent(jbBack,0,11,1,1,1,1,GridBagConstraints.NONE,GridBagConstraints.CENTER);
-		newPanel.addComponent(jbNext,2,11,1,1,1,1,GridBagConstraints.NONE,GridBagConstraints.CENTER);
-		newPanel.addComponent(jbCancel,4,11,1,1,1,1,GridBagConstraints.NONE,GridBagConstraints.CENTER);
+		//Add the action listner to the panels
+		initPanel.setActionListener(this);
+		newPanel.setActionListener(this);
 
 		//Main Interface Panel
 		add(initPanel, "Initial Panel");
@@ -126,12 +74,12 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 		String command = evt.getActionCommand();
 
 		switch (command){
-			case NEW:
+			case Constants.NEW:
 			{
 				cards.show(this.getContentPane(), "New Panel");
 			}
 			break;
-			case LOAD:{
+			case Constants.LOAD:{
 
 				String s;
 
@@ -181,7 +129,7 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 				cards.show(this.getContentPane(), "Region Panel");
 			}
 			break;
-			case SAVE:{
+			case Constants.SAVE:{
 				JFileChooser fc = new JFileChooser();
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
         			"Region Files", "rgn");
@@ -192,22 +140,22 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 					region.writeToFile(fc.getSelectedFile().getAbsolutePath());
 				}
 			} break;
-			case ABOUT:
+			case Constants.ABOUT:
 			{
 				about = new AboutDialog(this);
 				about.setVisible(true);
 			}
 			break;
-			case ESC:{
+			case Constants.ESC:{
 				super.dispose();
 				} break;
-			case CLOSE:{
+			case Constants.CLOSE:{
 				region = null;
 				cards.show(this.getContentPane(), "Initial Panel");
 				setTitle("Pathfinder Society Organised Play Tool");
 				setEnable(1);
 				} break;
-			case FIN:{
+			case Constants.FIN:{
 				String rName = newPanel.tfName.getText();
 				String rLoc = newPanel.tfName.getText();
 				if (! rName.equals("") & ! rLoc.equals("")){
@@ -221,11 +169,11 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 					region.addVenue(tD.getVenue());
 				}
 				} break;
-			case ADDVEN:{
+			case Constants.ADDVEN:{
 				AddVenue tD = new AddVenue(this);
 				region.addVenue(tD.getVenue());
 				} break;
-			case RENAME:{
+			case Constants.RENAME:{
 				Object[] venueList = region.getVenueList();
 				String s = (String) JOptionPane.showInputDialog(this,"Select Venue to rename:","Rename Venue", JOptionPane.PLAIN_MESSAGE,null,venueList,venueList[0]);
 				if ((s != null) &&  (s.length() > 0)){
@@ -240,7 +188,7 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 					mainInt.setStats(stats);
 				}
 				} break;
-			case MOVE:{
+			case Constants.MOVE:{
 				Object[] venueList = region.getVenueList();
 				String s = (String) JOptionPane.showInputDialog(this,"Select Venue to change address:","Move Venue", JOptionPane.PLAIN_MESSAGE,null,venueList,venueList[0]);
 				if ((s != null) &&  (s.length() > 0)){
@@ -255,7 +203,7 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 					mainInt.setStats(stats);
 				}
 				} break;
-			case ADDEVT:{
+			case Constants.ADDEVT:{
 				Object[] venueList = region.getVenueList();
 				Object[] optionList = new Object[venueList.length+1];
 				for (int i = 0; i<venueList.length;i++)
@@ -268,12 +216,12 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 					region.addEvent(vIndex, eventCode);
 				}
 				} break;
-			case UPDATEPLYR:{
+			case Constants.UPDATEPLYR:{
 				Task task = new Task();
 		 	   	task.execute();
 			}
 			break;
-			case ADDPLYR:{
+			case Constants.ADDPLYR:{
 				AddPlayer nP = new AddPlayer(this);
 				region.addPlayer(nP.getPlayer());
 				if(!miDisPlayer.isEnabled())
@@ -282,7 +230,7 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 				}
 			}
 			break;
-			case DISPLYR:{
+			case Constants.DISPLYR:{
 				Object[] playerList = region.getPlayerList().getPlayerList();
 				String s = (String) JOptionPane.showInputDialog(this,"Player to display:","Display Player", JOptionPane.PLAIN_MESSAGE,null,playerList,playerList[0]);
 				playerPanel.setValues( region.getPlayer( Integer.parseInt( s.split(" - ")[0] ) ) );
@@ -290,7 +238,7 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 				cards.show(this.getContentPane(), "Display Player");
 			}
 			break;
-			case FIND:
+			case Constants.FIND:
 				{
 					ArrayList playableScenarios = new ArrayList();
 					boolean playable = true;
@@ -328,10 +276,10 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 					ScenarioDialog sd = new ScenarioDialog(this,"Tables Found",playableScenarios);
 				}
 				break;
-			case DISCON:{
+			case Constants.DISCON:{
 				StatDis tD = new StatDis(this, "Display Conventions",region.getConvetionTotals(),"Red - Total Players\nBlue - Total Game Masters\nGreen - Total Sessions");
 				} break;
-			case DISVEN:{
+			case Constants.DISVEN:{
 				Object[] venueList = region.getVenueList();
 				String s = (String) JOptionPane.showInputDialog(this,"Select Venue to display:","Display Venue", JOptionPane.PLAIN_MESSAGE,null,venueList,venueList[0]);
 				if ((s != null) && (s.length() > 0)){
@@ -339,7 +287,7 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 					StatDis tD = new StatDis(this, "Display " + venueList[vIndex],region.getVenueLast12Totals(vIndex),"Red - Total Players\nBlue - Total Game Masters\nGreen - Total Sessions");
 				}
 				} break;
-			case DISYR:{
+			case Constants.DISYR:{
 				StatDis tD = new StatDis(this, "Statistics for the 12 months", region.getLast12MonthsTotals(), "Red - Total Players\nBlue - Total Game Masters\nGreen - Total Sessions");
 				} break;
 			default:
@@ -406,25 +354,25 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 		mFile = new JMenu("File");
 
 		miNew = new JMenuItem("New Region");
-		miNew.setActionCommand(NEW);
+		miNew.setActionCommand(Constants.NEW);
 		miNew.addActionListener(this);
 
 		miLoad = new JMenuItem("Load Region");
-		miLoad.setActionCommand(LOAD);
+		miLoad.setActionCommand(Constants.LOAD);
 		miLoad.addActionListener(this);
 
 		miSave = new JMenuItem("Save Region");
-		miSave.setActionCommand(SAVE);
+		miSave.setActionCommand(Constants.SAVE);
 		miSave.setEnabled(false);
 		miSave.addActionListener(this);
 
 		miClose = new JMenuItem("Close Region");
-		miClose.setActionCommand(CLOSE);
+		miClose.setActionCommand(Constants.CLOSE);
 		miClose.setEnabled(false);
 		miClose.addActionListener(this);
 
 		miExit = new JMenuItem("Exit");
-		miExit.setActionCommand(ESC);
+		miExit.setActionCommand(Constants.ESC);
 		miExit.addActionListener(this);
 
 		mFile.add(miNew);
@@ -443,52 +391,52 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 		mFunctions = new JMenu("Functions");
 		//Add the Function menu items.
 		miAddVenue = new JMenuItem("Add Venue");
-		miAddVenue.setActionCommand(ADDVEN);
+		miAddVenue.setActionCommand(Constants.ADDVEN);
 		miAddVenue.setEnabled(false);
 		miAddVenue.addActionListener(this);
 
 		miRename = new JMenuItem("Rename Venue");
-		miRename.setActionCommand(RENAME);
+		miRename.setActionCommand(Constants.RENAME);
 		miRename.setEnabled(false);
 		miRename.addActionListener(this);
 
 		miMove = new JMenuItem("Move Venue");
-		miMove.setActionCommand(MOVE);
+		miMove.setActionCommand(Constants.MOVE);
 		miMove.setEnabled(false);
 		miMove.addActionListener(this);
 
 		miAddEvent = new JMenuItem("Add Event to Venue");
-		miAddEvent.setActionCommand(ADDEVT);
+		miAddEvent.setActionCommand(Constants.ADDEVT);
 		miAddEvent.setEnabled(false);
 		miAddEvent.addActionListener(this);
 
 		miAddPlayer = new JMenuItem("Add Player");
-		miAddPlayer.setActionCommand(ADDPLYR);
+		miAddPlayer.setActionCommand(Constants.ADDPLYR);
 		miAddPlayer.setEnabled(false);
 		miAddPlayer.addActionListener(this);
 
 		miDisPlayer = new JMenuItem("Display Player");
-		miDisPlayer.setActionCommand(DISPLYR);
+		miDisPlayer.setActionCommand(Constants.DISPLYR);
 		miDisPlayer.setEnabled(false);
 		miDisPlayer.addActionListener(this);
 
 		miFindScenario = new JMenuItem("Find Scenario");
-		miFindScenario.setActionCommand(FIND);
+		miFindScenario.setActionCommand(Constants.FIND);
 		miFindScenario.setEnabled(false);
 		miFindScenario.addActionListener(this);
 
 		miDisPrevYear = new JMenuItem("Display Previous 12 months");
-		miDisPrevYear.setActionCommand(DISYR);
+		miDisPrevYear.setActionCommand(Constants.DISYR);
 		miDisPrevYear.setEnabled(false);
 		miDisPrevYear.addActionListener(this);
 
 		miDisConventions = new JMenuItem("Display Conventions");
-		miDisConventions.setActionCommand(DISCON);
+		miDisConventions.setActionCommand(Constants.DISCON);
 		miDisConventions.setEnabled(false);
 		miDisConventions.addActionListener(this);
 
 		miDisVenue = new JMenuItem("Display Venue");
-		miDisVenue.setActionCommand(DISVEN);
+		miDisVenue.setActionCommand(Constants.DISVEN);
 		miDisVenue.setEnabled(false);
 		miDisVenue.addActionListener(this);
 
@@ -500,10 +448,6 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 		mFunctions.addSeparator();
 		mFunctions.add(miFindScenario);
 		mFunctions.add(miDisPlayer);
-		//mFunctions.addSeparator();
-		//mFunctions.add(miDisPrevYear);
-		//mFunctions.add(miDisConventions);
-		//mFunctions.add(miDisVenue);
 
 		mb.add(mFunctions);
 	}
@@ -512,7 +456,7 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 	{
 		mVC = new JMenu("VC Functions");
 		miUpdateAll = new JMenuItem("Update All Players");
-		miUpdateAll.setActionCommand(UPDATEPLYR);
+		miUpdateAll.setActionCommand(Constants.UPDATEPLYR);
 		miUpdateAll.setEnabled(false);
 		miUpdateAll.addActionListener(this);
 		mVC.add(miUpdateAll);
@@ -527,7 +471,7 @@ public class PFSOrganiserTool extends JFrame implements ActionListener {
 		mHelp = new JMenu("Help");
 		//Add the Help menu items
 		miAbout = new JMenuItem("About");
-		miAbout.setActionCommand(ABOUT);
+		miAbout.setActionCommand(Constants.ABOUT);
 		miAbout.addActionListener(this);
 
 		mHelp.add(miAbout);
