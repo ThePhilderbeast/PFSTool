@@ -2,16 +2,16 @@
 !define COMPANYNAME "Philderbeast"
 !define DESCRIPTION "Provides a simple interfce to assist in even planning"
 # These three must be integers
-!define VERSIONMAJOR 0
-!define VERSIONMINOR 1
-!define VERSIONBUILD 1
+!define VERSIONMAJOR 1
+!define VERSIONMINOR 0
+!define VERSIONBUILD 0
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "http://..." # "Support Information" link
 !define UPDATEURL "http://..." # "Product Updates" link
 !define ABOUTURL "http://..." # "Publisher" link
 # This is the size (in kB) of all the files copied into "Program Files"
-!define INSTALLSIZE 1680
+!define INSTALLSIZE 14643
 
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
 
