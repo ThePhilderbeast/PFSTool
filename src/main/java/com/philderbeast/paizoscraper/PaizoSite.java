@@ -3,7 +3,7 @@
 * @Date:   2016-08-17T14:09:02+10:00
 * @Email:  phillip@philderbeast.com
 * @Last modified by:   Phillip Ledger
-* @Last modified time: 2016-09-04T21:30:47+10:00
+* @Last modified time: 2016-09-29T19:01:06+10:00
 */
 
 package com.philderbeast.paizoscraper;
@@ -44,7 +44,7 @@ public class PaizoSite
 	}
 
 	//need to think about this more
-	public void parseList(PlayerList playerList, PFSRegion r)
+	public void parseList(ArrayList playerList, PFSRegion r)
 	{
 
 		progress.progressStart(100, "logging in to Paizo");
@@ -62,8 +62,11 @@ public class PaizoSite
 
 		System.out.println("steps " + steps);
 
-		for(Player p: playerList)
+		for(Object o: playerList)
 		{
+
+			Player p = (Player) o;
+
 			if(p.getSessURL() != null)
 			{
 				browser.navigate().to("https://secure.paizo.com/people/" + p.getSessURL() + "/sessions");
@@ -143,17 +146,16 @@ public class PaizoSite
 					c = Scenario.Campaign.PFS;
 				}
 
-				Scenario s = new Scenario(scenarioName, (byte)0, (byte)0, "", "", "", c);
-				if(r.scenarioList.add(s))
-				{
-					Collections.sort(r.scenarioList);
-				}
+				Scenario s = new Scenario(scenarioName, 0, 0);
+				r.addScenario(s);
 
-				if ( !p.playedScenario(scenarioName, gm ) )
-				{
-					PlayerSession ps = new PlayerSession(eventCode, eventName, sessNum, scenarioName, character, date);
-					p.addSession(ps, gm);
-				}
+
+				//TODO: fix this with the new layout
+				//if ( !p.playedScenario(scenarioName, gm ) )
+				//{
+				//	PlayerSession ps = new PlayerSession(eventCode, eventName, sessNum, scenarioName, character, date);
+				//	p.addSession(ps, gm);
+				//}
 
 			}
 

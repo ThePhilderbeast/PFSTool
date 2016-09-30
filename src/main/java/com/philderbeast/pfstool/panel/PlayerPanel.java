@@ -3,7 +3,7 @@
 * @Date:   2016-04-06T19:54:42+10:00
 * @Email:  phillip@philderbeast.com
 * @Last modified by:   Phillip Ledger
-* @Last modified time: 2016-09-01T10:11:05+10:00
+* @Last modified time: 2016-09-29T19:04:43+10:00
 */
 package com.philderbeast.pfstool.panel;
 
@@ -63,32 +63,33 @@ public class PlayerPanel extends JPanel implements ActionListener {
 
 		p = playerToDisplay;
 
-		ArrayList<PlayerSession> sessionsPlayed = playerToDisplay.getSessionsPlayed();
-		ArrayList<PlayerSession> sessionsRun = playerToDisplay.getSessionsRun();
+		//TODO: fix all of this
+		//ArrayList<Session> sessionsPlayed = playerToDisplay.getSessionsPlayed();
+		//ArrayList<PlayerSession> sessionsRun = playerToDisplay.getSessionsRun();
 
 		lblName.setText(playerToDisplay.getName());
 		lblNumber.setText("PFS Number: " + playerToDisplay.getNumber());
 		lblEmail.setText("eMail Address: " + playerToDisplay.getEMail());
-		lblNumSession.setText("Sessions Played: " + sessionsPlayed.size());
-		lblCredit.setText("Total Credit: " + playerToDisplay.getGMCredit());
-		lblNumScenariosRun.setText("Total Scenarios Run: " + sessionsRun.size());
+		//lblNumSession.setText("Sessions Played: " + sessionsPlayed.size());
+		//lblCredit.setText("Total Credit: " + playerToDisplay.getGMCredit());
+		//lblNumScenariosRun.setText("Total Scenarios Run: " + sessionsRun.size());
 
 		//blank out the feilds before adding the new data
 		pPlayed.setText("Scenarios Played:-\n\n");
 		pRun.setText("Scenarios Run:-\n\n");
 
 		//get the names of all the scernarios that have been played
-		for (PlayerSession ps : sessionsPlayed)
-		{
-			pPlayed.append(ps.scenarioName + "\n");
-		}
+		//for (PlayerSession ps : sessionsPlayed)
+		//{
+		//	pPlayed.append(ps.scenarioName + "\n");
+		//}
 		pPlayed.setCaretPosition(0);
 
 		//get the names of all the scernarios that have been played
-		for (PlayerSession ps : sessionsRun)
-		{
-			pRun.append(ps.scenarioName + "\n");
-		}
+		//for (PlayerSession ps : sessionsRun)
+		//{
+		//	pRun.append(ps.scenarioName + "\n");
+		//}
 		pRun.setCaretPosition(0);
 	}
 
@@ -123,11 +124,8 @@ public class PlayerPanel extends JPanel implements ActionListener {
 	class Task extends SwingWorker<Void, Void> {
 		@Override
 		public Void doInBackground() {
-		   if(region.paizoSite == null)
-			{
-				region.paizoSite = new PaizoSite();
-			}
-			region.paizoSite.parseSingle(p, region);
+			PaizoSite paizoSite = new PaizoSite();
+			paizoSite.parseSingle(p, region);
 			setValues(p);
 			return null;
 		}

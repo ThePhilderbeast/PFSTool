@@ -1,56 +1,61 @@
 /**
-* @Author: Ben Jordan
 * @Author: Phillip Ledger <Philderbeast>
 * @Date:   2016-04-06T19:54:42+10:00
 * @Email:  phillip@philderbeast.com
-* @Last modified by:   Philderbeast
-* @Last modified time: 2016-08-14T11:43:46+10:00
+* @Last modified by:   Phillip Ledger
+* @Last modified time: 2016-09-29T20:02:32+10:00
 */
 package com.philderbeast.paizolib;
 
-
-import java.util.*;
 import java.io.*;
+import java.util.*;
+import javax.persistence.*;
 
-public class Venue implements Serializable{
-	protected String venueName;
-	protected String venueAddress;
-	protected Vector eventList;
+@Entity
+@Table
+public class Venue{
+
+	@Id
+	private String venueName;
+	private String venueAddress;
+
+	@OneToMany(mappedBy="eventNumber")
+	private List<Event> eventList;
 
 	public Venue(String inName){
 		venueName = inName;
-		eventList = new Vector(5,5);
+		eventList = new ArrayList<Event>();
 	}
 
 	public Venue(String inName, String inAddress){
 		venueName = inName;
 		venueAddress = inAddress;
-		eventList = new Vector(5,5);
+		eventList = new ArrayList<Event>();
 	}
 
-	Venue(Venue inVenue){
+	protected Venue(Venue inVenue){
 		venueName = inVenue.getName();
 		venueAddress = inVenue.getAddress();
 		eventList = inVenue.getEvents();
 	}
 
 	public void addEvent(Event inEvent){
-		eventList.addElement(new Event(inEvent));
+		eventList.add(new Event(inEvent));
 	}
 
 	public void addEvent(String inNumber){
-		eventList.addElement(new Event(inNumber));
+		eventList.add(new Event(inNumber));
 	}
 
-	void addEvent(String inNumber, String inEventName, String inEventSessionURL){
-		eventList.addElement(new Event(inNumber, inEventName, inEventSessionURL));
+	protected void addEvent(String inNumber, String inEventName, String inEventSessionURL){
+		eventList.add(new Event(inNumber, inEventName, inEventSessionURL));
 	}
 
-	void changeName(String newName){
+	protected void changeName(String newName){
 		venueName = newName;
 	}
 
-	void setAddress(String inAdd){
+	protected void setAddress(String inAdd){
 		venueAddress = inAdd;
 	}
 
@@ -62,11 +67,11 @@ public class Venue implements Serializable{
 		return venueAddress;
 	}
 
-	public Vector getEvents(){
-		return eventList;
+	public ArrayList<Event> getEvents(){
+		return (ArrayList<Event>)eventList;
 	}
 
-	String listEvents(){
+	protected String listEvents(){
 		String rtnString;
 		int i;
 		Event currentEvent;

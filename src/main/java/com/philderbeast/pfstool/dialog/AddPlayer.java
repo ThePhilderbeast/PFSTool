@@ -1,10 +1,9 @@
 /**
-* @Author: Ben Jordan
 * @Author: Phillip Ledger <Philderbeast>
 * @Date:   2016-04-06T19:54:42+10:00
 * @Email:  phillip@philderbeast.com
-* @Last modified by:   Philderbeast
-* @Last modified time: 2016-08-14T09:01:40+10:00
+* @Last modified by:   Phillip Ledger
+* @Last modified time: 2016-09-28T20:29:32+10:00
 */
 package com.philderbeast.pfstool.dialog;
 
@@ -23,8 +22,8 @@ public class AddPlayer extends JDialog  implements ActionListener {
 	private JTextField tfFirstName = new JTextField();
 	private JTextField tfSurname = new JTextField();
 	private JTextField tfPaizoName = new JTextField();
-	private JTextArea tfPFSNumber = new JTextArea();
-	private JTextArea tfeMail = new JTextArea();
+	private JTextField tfPFSNumber = new JTextField();
+	private JTextField tfeMail = new JTextField();
 
 	public AddPlayer(JFrame parent) {
 		super(parent, "Add Player to Region", true);
@@ -72,7 +71,8 @@ public class AddPlayer extends JDialog  implements ActionListener {
 		gridBag.setConstraints(lblSurname, constraints);
 		getContentPane().add(lblSurname);
 
-		JLabel lblPaizoName= new JLabel("Paizo Name:");
+		//TODO: explain this better so it makes more sence if the url name
+		JLabel lblPaizoName= new JLabel("Paizo Alias:");
 		constraints.gridx = 0;
 		constraints.gridy = 4;
 		constraints.gridwidth = 1;

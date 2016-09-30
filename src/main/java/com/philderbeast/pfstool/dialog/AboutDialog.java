@@ -1,10 +1,9 @@
 /**
-* @Author: Ben Jordan
 * @Author: Phillip Ledger <Philderbeast>
 * @Date:   2016-04-06T19:54:42+10:00
 * @Email:  phillip@philderbeast.com
 * @Last modified by:   Phillip Ledger
-* @Last modified time: 2016-08-19T14:53:05+10:00
+* @Last modified time: 2016-09-26T17:45:03+10:00
 */
 package com.philderbeast.pfstool.dialog;
 

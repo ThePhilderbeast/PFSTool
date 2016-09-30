@@ -1,10 +1,9 @@
 /**
-* @Author: Ben Jordan
 * @Author: Phillip Ledger <Philderbeast>
 * @Date:   2016-04-06T19:54:42+10:00
 * @Email:  phillip@philderbeast.com
-* @Last modified by:   Philderbeast
-* @Last modified time: 2016-08-14T09:01:51+10:00
+* @Last modified by:   Phillip Ledger
+* @Last modified time: 2016-09-28T20:30:32+10:00
 */
 package com.philderbeast.pfstool.dialog;
 
@@ -22,7 +21,7 @@ public class AddVenue extends JDialog  implements ActionListener {
 
 	private JTextField tfName = new JTextField();
 	private JTextField tfAddress = new JTextField();
-	private JTextArea tfEvent = new JTextArea();
+	private JTextField tfEvent = new JTextField();
 
 	public AddVenue(JFrame parent) {
 		super(parent, "Add Venue to Region", true);

@@ -3,7 +3,7 @@
 * @Date:   2016-08-13T15:27:59+10:00
 * @Email:  phillip@philderbeast.com
 * @Last modified by:   Phillip Ledger
-* @Last modified time: 2016-08-28T09:34:39+10:00
+* @Last modified time: 2016-09-26T17:39:59+10:00
 */
 package com.philderbeast.pfstool.dialog;
 
@@ -52,10 +52,11 @@ public class TableFinder extends JDialog implements ActionListener {
             players[i] = new JComboBox();
             int playerNum = i+1;
             players[i].addItem("");
-            for (String player : region.getPlayerList().getPlayerList())
-            {
-                players[i].addItem(player);
-            }
+            //TODO: update for JPA
+            //for (String player : region.getPlayerList())
+            //{
+            //    players[i].addItem(player);
+            //}
 
             l = new JLabel("Player " + playerNum);
 

@@ -30,7 +30,12 @@ launch4j {
 
 dependencies
 {
+    //html parsing dependencys
     compile group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
     compile group: 'org.seleniumhq.selenium', name: 'htmlunit-driver', version: '2.21'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '2.53.1'
+
+    //Saving dependencies
+    compile group: 'org.hibernate', name: 'hibernate-core' , version: '5.2.2.Final'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.14.2'
 }
