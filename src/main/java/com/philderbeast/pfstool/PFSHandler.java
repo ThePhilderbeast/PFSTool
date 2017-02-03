@@ -3,7 +3,7 @@
 * @Date:   2016-09-01T10:52:30+10:00
 * @Email:  phillip@philderbeast.com
 * @Last modified by:   Phillip Ledger
-* @Last modified time: 2016-09-29T19:07:27+10:00
+* @Last modified time: 2016-12-04T19:28:34+11:00
 */
 package com.philderbeast.pfstool;
 
@@ -13,6 +13,7 @@ import com.philderbeast.pfstool.dialog.*;
 
 import java.awt.event.*;
 import java.io.*;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.*;
@@ -25,6 +26,11 @@ public class PFSHandler implements ActionListener
     public PFSHandler(PFSOrganiserTool pfstool)
     {
         this.pfstool = pfstool;
+    }
+
+    public void setRegion(PFSRegion r)
+    {
+        this.region = r;
     }
 
     public void actionPerformed(ActionEvent evt){
@@ -52,16 +58,16 @@ public class PFSHandler implements ActionListener
                 }
 
                 try {
+                    //TODO: update for JPA
                     FileInputStream fileIn = new FileInputStream(s);
                     ObjectInputStream in = new ObjectInputStream(fileIn);
                     region = (PFSRegion) in.readObject();
                     in.close();
                     fileIn.close();
-                    //TODO: update for JPA
-                    //for(Scenario sce : region.scenarioList)
-                    //{
-                    //    sce.setCampaign();
-                    //}
+                    for(Scenario sce : region.getScenarios())
+                    {
+                        sce.setCampaign();
+                    }
                 } catch (IOException IOE) {
                     System.out.println("Error opening file");
                     IOE.printStackTrace();
@@ -73,10 +79,11 @@ public class PFSHandler implements ActionListener
                 }
 
                 pfstool.setTitle(region.getName() + " - Pathfinder Society Organised Play Tool");
-                String[] venueList = region.getVenueList();
+                ArrayList<Venue> venueList = region.getVenueList();
                 String sVenues ="Venues:";
-                for(int i = 0; i < venueList.length; i++)
-                    sVenues = sVenues + "\n\t" + venueList[i];
+                for (Venue v : venueList) {
+                    sVenues = sVenues + "\n\t" + v.getName();
+                }
                 String[] stats = {"Region Name: " + region.getName(), "Region Location: " + region.getLoc(), "Total number of Players: " + region.getNumPlayers(), "Total number of Game Masters: " + region.getNumGMs(),"Totals Scenarios Known: " + region.getScenarios().size(), "\nTotal number of Venues: " + region.getNumVenues(),sVenues};
                 pfstool.mainInt.setStats(stats);
                 pfstool.setEnable(0);
@@ -126,31 +133,31 @@ public class PFSHandler implements ActionListener
                 region.addVenue(tD.getVenue());
                 } break;
             case Constants.RENAME:{
-                Object[] venueList = region.getVenueList();
-                String s = (String) JOptionPane.showInputDialog(pfstool,"Select Venue to rename:","Rename Venue", JOptionPane.PLAIN_MESSAGE,null,venueList,venueList[0]);
+                ArrayList<Venue> venueList = region.getVenueList();
+                String s = (String) JOptionPane.showInputDialog(pfstool,"Select Venue to rename:","Rename Venue", JOptionPane.PLAIN_MESSAGE,null,venueList.toArray(),venueList.get(0).getName());
                 if ((s != null) &&  (s.length() > 0)){
                     int vIndex = region.getVenueIndex(s);
                     s = (String) JOptionPane.showInputDialog(pfstool,"Enter new name for Venue:","Rename Venue",JOptionPane.PLAIN_MESSAGE);
                     region.renameVenue(vIndex,s);
                     venueList = region.getVenueList();
                     String sVenues ="Venues:";
-                    for(int i = 0; i < venueList.length; i++)
-                        sVenues = sVenues + "\n\t" + venueList[i];
+                    for(int i = 0; i < venueList.size(); i++)
+                        sVenues = sVenues + "\n\t" + venueList.get(i);
                     String[] stats = {"Region Name: " + region.getName(), "Region Location: " + region.getLoc(), "Total number of Players: " + region.getNumPlayers(), "Total number of Game Masters: " + region.getNumGMs(), "Total number of Venues: " + region.getNumVenues(),sVenues};
                     pfstool.mainInt.setStats(stats);
                 }
                 } break;
             case Constants.MOVE:{
-                Object[] venueList = region.getVenueList();
-                String s = (String) JOptionPane.showInputDialog(pfstool,"Select Venue to change address:","Move Venue", JOptionPane.PLAIN_MESSAGE,null,venueList,venueList[0]);
+                ArrayList<Venue> venueList = region.getVenueList();
+                String s = (String) JOptionPane.showInputDialog(pfstool,"Select Venue to change address:","Move Venue", JOptionPane.PLAIN_MESSAGE,null,venueList.toArray(),venueList.get(0));
                 if ((s != null) &&  (s.length() > 0)){
                     int vIndex = region.getVenueIndex(s);
                     s = (String) JOptionPane.showInputDialog(pfstool,"Enter new address for Venue:","Move Venue",JOptionPane.PLAIN_MESSAGE);
                     region.moveVenue(vIndex,s);
                     venueList = region.getVenueList();
                     String sVenues ="Venues:";
-                    for(int i = 0; i < venueList.length; i++)
-                        sVenues = sVenues + "\n\t" + venueList[i];
+                    for(int i = 0; i < venueList.size(); i++)
+                        sVenues = sVenues + "\n\t" + venueList.get(i);
                     String[] stats = {"Region Name: " + region.getName(), "Region Location: " + region.getLoc(), "Total number of Players: " + region.getNumPlayers(), "Total number of Game Masters: " + region.getNumGMs(), "Total number of Venues: " + region.getNumVenues(),sVenues};
                     pfstool.mainInt.setStats(stats);
                 }
@@ -183,7 +190,7 @@ public class PFSHandler implements ActionListener
             break;
             case Constants.FIND:
                 {
-                    ArrayList playableScenarios = new ArrayList();
+                    ArrayList<Scenario> playableScenarios = new ArrayList<Scenario>();
                     boolean playable = true;
 
                     TableFinder tableFinder = new TableFinder(pfstool, region);
@@ -198,8 +205,11 @@ public class PFSHandler implements ActionListener
                         }
                     }
 
-                    /**
-                    for (Scenario currentScenario : region.scenarioList)
+                    
+
+
+
+                    for (Scenario currentScenario : region.getScenarios())
                     {
                         playable = true;
 
@@ -208,16 +218,17 @@ public class PFSHandler implements ActionListener
                         for (int j = 0; j < currentPlayers.length; j++){
                             if (currentPlayers[j] != null)
                             {
-                                playable = playable && !currentPlayers[j].playedScenario(currentScenario.name);
+                                
+                                //playable = playable && !currentPlayers[j].playedScenario(currentScenario);
                             }
                         }
 
                         if (playable) {
-                                playableScenarios.add(currentScenario.name);
+                                playableScenarios.add(currentScenario);
                         }
                     }
-                    **/
 
+                    @SuppressWarnings("unused")
                     ScenarioDialog sd = new ScenarioDialog(pfstool,"Tables Found",playableScenarios);
                 }
                 break;
@@ -225,10 +236,10 @@ public class PFSHandler implements ActionListener
                 //StatDis tD = new StatDis(pfstool, "Display Conventions",region.getConvetionTotals(),"Red - Total Players\nBlue - Total Game Masters\nGreen - Total Sessions");
                 } break;
             case Constants.DISVEN:{
-                Object[] venueList = region.getVenueList();
-                String s = (String) JOptionPane.showInputDialog(pfstool,"Select Venue to display:","Display Venue", JOptionPane.PLAIN_MESSAGE,null,venueList,venueList[0]);
+                ArrayList<Venue> venueList = region.getVenueList();
+                String s = (String) JOptionPane.showInputDialog(pfstool,"Select Venue to display:","Display Venue", JOptionPane.PLAIN_MESSAGE,null,venueList.toArray(),venueList.get(0));
                 if ((s != null) && (s.length() > 0)){
-                    int vIndex = region.getVenueIndex(s);
+                    //int vIndex = region.getVenueIndex(s);
                     //StatDis tD = new StatDis(pfstool, "Display " + venueList[vIndex],region.getVenueLast12Totals(vIndex),"Red - Total Players\nBlue - Total Game Masters\nGreen - Total Sessions");
                 }
                 } break;

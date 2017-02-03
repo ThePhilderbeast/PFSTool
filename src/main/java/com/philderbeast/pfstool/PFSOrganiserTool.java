@@ -8,18 +8,19 @@
 
 package com.philderbeast.pfstool;
 
-import com.philderbeast.paizolib.*;
-import com.philderbeast.paizoscraper.*;
-import com.philderbeast.pfstool.dialog.*;
+//import com.philderbeast.paizolib.*;
+//import com.philderbeast.paizoscraper.*;
+//import com.philderbeast.pfstool.dialog.*;
 import com.philderbeast.pfstool.panel.*;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+//import java.awt.event.*;
+//import java.io.*;
+//import java.util.*;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
+//import javax.swing.filechooser.FileNameExtensionFilter;
 
+@SuppressWarnings("serial")
 public class PFSOrganiserTool extends JFrame{
 
 	CardLayout cards = new CardLayout();

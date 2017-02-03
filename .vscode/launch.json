@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Java",
+            "type": "java",
+            "request": "launch",
+            "stopOnEntry": true,
+            "cwd": "${workspaceRoot}/build/classes/main/",
+            "startupClass": "Main",
+            "options": [
+                "-classpath",
+                "\"${workspaceRoot}/build/classes/main/;.\""
+            ]
+        }
+    ]
+}

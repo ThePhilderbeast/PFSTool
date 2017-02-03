@@ -12,11 +12,9 @@ import com.philderbeast.paizoscraper.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import javax.swing.*;
-import java.beans.*;
 
+@SuppressWarnings("serial")
 public class PlayerPanel extends JPanel implements ActionListener {
 	GridBagLayout gridBag = new GridBagLayout();
 	JLabel lblName, lblNumber, lblEmail, lblNumSession, lblCredit, lblNumScenariosRun;
@@ -25,9 +23,7 @@ public class PlayerPanel extends JPanel implements ActionListener {
 	Player p;
 	PFSRegion region;
 
-	private ProgressMonitor progressMonitor;
 	private Task task;
-
 
 	public PlayerPanel() {
 		super();

@@ -12,6 +12,7 @@ import com.philderbeast.pfstool.*;
 import java.awt.*;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class RegionPanel extends JPanel {
 	TextArea regionStats = new TextArea();
 

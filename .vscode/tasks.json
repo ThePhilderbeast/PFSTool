@@ -1,0 +1,68 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "command": "gradle",
+    "isShellCommand": true,
+    "showOutput": "always",
+    "args": [],
+    "tasks": [
+		{
+			"taskName": "assemble",
+			"showOutput": "silent",
+			"isBuildCommand": true,
+			"problemMatcher": {
+				"owner": "external",
+				"fileLocation": "absolute",
+				"pattern": [
+					{
+						"regexp": "^(.+\\.java):(\\d):(?:\\s+(error)):(?:\\s+(.*))$",
+						"file": 1,
+						"location": 2,
+						"severity": 3,
+						"message": 4,
+						"loop": true	// add this to loop through multiple lines
+					}
+				]
+			}
+		},
+		{
+			"taskName": "run",
+			"showOutput": "silent",
+			"isBuildCommand": true,
+			"problemMatcher": {
+				"owner": "external",
+				"fileLocation": "absolute",
+				"pattern": [
+					{
+						"regexp": "^(.+\\.java):(\\d):(?:\\s+(error)):(?:\\s+(.*))$",
+						"file": 1,
+						"location": 2,
+						"severity": 3,
+						"message": 4,
+						"loop": true	// add this to loop through multiple lines
+					}
+				]
+			}
+		},
+		{
+			"taskName": "runDebug",
+			"showOutput": "silent",
+			"isBuildCommand": true,
+			"problemMatcher": {
+				"owner": "external",
+				"fileLocation": "absolute",
+				"pattern": [
+					{
+						"regexp": "^(.+\\.java):(\\d):(?:\\s+(error)):(?:\\s+(.*))$",
+						"file": 1,
+						"location": 2,
+						"severity": 3,
+						"message": 4,
+						"loop": true	// add this to loop through multiple lines
+					}
+				]
+			}
+		}
+	]
+}

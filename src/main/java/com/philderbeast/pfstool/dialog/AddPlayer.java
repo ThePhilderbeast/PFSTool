@@ -13,11 +13,12 @@ import javax.swing.*;
 
 import com.philderbeast.paizolib.Player;
 
+@SuppressWarnings("serial")
 public class AddPlayer extends JDialog  implements ActionListener {
 
 	private Player newPlayer;
-	private JButton finish;
-	private JButton cancel;
+	//private JButton finish;
+	//private JButton cancel;
 
 	private JTextField tfFirstName = new JTextField();
 	private JTextField tfSurname = new JTextField();

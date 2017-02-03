@@ -10,6 +10,7 @@ package com.philderbeast.pfstool.dialog;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.Container;
+import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -20,12 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 import com.philderbeast.paizolib.PFSRegion;
-import com.philderbeast.paizolib.Player;
 
+@SuppressWarnings("serial")
 public class TableFinder extends JDialog implements ActionListener {
 
-    JComboBox[] players;
-    JComboBox gm;
+    ArrayList<JComboBox<String>> players;
+    JComboBox<String> gm;
 
     PFSRegion r;
 
@@ -43,15 +44,18 @@ public class TableFinder extends JDialog implements ActionListener {
         r = region;
         SpringLayout layout = new SpringLayout();
         JPanel playersPanel = new JPanel(layout);
-        players = new JComboBox[NUMPLAYERS];
+    
+        players = new ArrayList<JComboBox<String>>(NUMPLAYERS);
+
+//        players = new JComboBox[NUMPLAYERS];
 
         JLabel l;
         Container contentPane = getContentPane();
         for (int i = 0; i < 6; i++)
         {
-            players[i] = new JComboBox();
+            players.add(new JComboBox<String>());
             int playerNum = i+1;
-            players[i].addItem("");
+            players.get(i).addItem("");
             //TODO: update for JPA
             //for (String player : region.getPlayerList())
             //{
@@ -61,7 +65,7 @@ public class TableFinder extends JDialog implements ActionListener {
             l = new JLabel("Player " + playerNum);
 
             playersPanel.add(l);
-            playersPanel.add(players[i]);
+            playersPanel.add(players.get(i));
 
         }
 
@@ -86,7 +90,7 @@ public class TableFinder extends JDialog implements ActionListener {
         if (command.equals("ok")) {
             for (int i = 0; i < NUMPLAYERS; i++)
             {
-                result[i] = (String) players[i].getSelectedItem();
+                result[i] = (String) players.get(i).getSelectedItem();
             }
 
             setVisible(false);

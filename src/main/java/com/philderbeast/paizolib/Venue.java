@@ -7,7 +7,7 @@
 */
 package com.philderbeast.paizolib;
 
-import java.io.*;
+//import java.io.*;
 import java.util.*;
 import javax.persistence.*;
 

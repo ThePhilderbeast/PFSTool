@@ -9,7 +9,6 @@ package com.philderbeast.pfstool.dialog;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.*;
 
 public class ProgressDialog

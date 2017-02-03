@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
 
+@SuppressWarnings("serial")
 public class Last12Display extends JPanel {
 	private int[][] stats = {{1,2,3},{4,5,6},{7,8,9},{9,8,7},{6,5,4},{3,2,1},{4,8,6},{8,4,6},{6,8,4},{8,6,6},{1,2,3},{9,8,7},{4,5,6}};
 	private int maxValue = 9;
@@ -21,7 +22,7 @@ public class Last12Display extends JPanel {
 
 	public void paintComponent(Graphics comp) {
 		int height = this.getHeight();
-		int width = this.getWidth();
+		//int width = this.getWidth();
 		int increment = height / maxValue;
 
 		Graphics2D comp2D = (Graphics2D)comp;

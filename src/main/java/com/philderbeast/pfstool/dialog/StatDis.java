@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class StatDis extends JDialog  implements ActionListener {
 
 	public StatDis(JFrame parent, String title, int[][] inValues, String inLegend) {

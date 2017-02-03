@@ -13,11 +13,12 @@ import javax.swing.*;
 
 import com.philderbeast.paizolib.Venue;
 
+@SuppressWarnings("serial")
 public class AddVenue extends JDialog  implements ActionListener {
 
 	private Venue newVenue;
-	private JButton finish;
-	private JButton cancel;
+	//private JButton finish;
+	//private JButton cancel;
 
 	private JTextField tfName = new JTextField();
 	private JTextField tfAddress = new JTextField();

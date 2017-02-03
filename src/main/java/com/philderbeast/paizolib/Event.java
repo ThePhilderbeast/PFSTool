@@ -7,7 +7,7 @@
 */
 package com.philderbeast.paizolib;
 
-import java.util.*;
+//import java.util.*;
 import javax.persistence.*;
 
 @Entity

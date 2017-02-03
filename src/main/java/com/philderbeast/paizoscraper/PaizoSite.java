@@ -5,22 +5,21 @@
 * @Last modified by:   Phillip Ledger
 * @Last modified time: 2016-09-29T19:01:06+10:00
 */
-
 package com.philderbeast.paizoscraper;
 
-import com.gargoylesoftware.htmlunit.*;
 import com.philderbeast.paizolib.*;
 import com.philderbeast.pfstool.dialog.*;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 import org.openqa.selenium.*;
-import org.openqa.selenium.By.*;
 import org.openqa.selenium.htmlunit.*;
-import org.openqa.selenium.interactions.*;
-import org.openqa.selenium.remote.*;
 
-import java.awt.Cursor;
+import java.text.DateFormat;
+import java.text.ParseException;
+
+
+
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.*;
@@ -44,7 +43,7 @@ public class PaizoSite
 	}
 
 	//need to think about this more
-	public void parseList(ArrayList playerList, PFSRegion r)
+	public void parseList(ArrayList<Player> playerList, PFSRegion r)
 	{
 
 		progress.progressStart(100, "logging in to Paizo");
@@ -107,15 +106,10 @@ public class PaizoSite
 
 	private void parseScenario(Document doc, Player p, PFSRegion r, boolean updateProgress)
 	{
-		String character;
-		String eventCode;
-		String eventName;
-		String sessNum;
+		String eventCode;;
 		String scenarioName;
 		String date;
 		Boolean gm;
-		Scenario.Campaign c;
-
 
 		//find the tabs div
 		Element tabs = doc.getElementById("tabs");
@@ -130,32 +124,24 @@ public class PaizoSite
 			if (cells.size() > 8)
 			{
 
-				character = cells.get(7).text();
 				eventCode = cells.get(1).text();
-				eventName = cells.get(2).text();
-				sessNum = cells.get(3).text();
 				scenarioName = cells.get(5).text();
 				date = cells.get(0).text();
 				gm = cells.get(9).text().contains("GM");
 
-				if (scenarioName.contains("(PFC)"))
-				{
-					c = Scenario.Campaign.CORE;
-				} else
-				{
-					c = Scenario.Campaign.PFS;
-				}
-
 				Scenario s = new Scenario(scenarioName, 0, 0);
 				r.addScenario(s);
 
-
-				//TODO: fix this with the new layout
-				//if ( !p.playedScenario(scenarioName, gm ) )
-				//{
-				//	PlayerSession ps = new PlayerSession(eventCode, eventName, sessNum, scenarioName, character, date);
-				//	p.addSession(ps, gm);
-				//}
+				//convert to a java date format
+				try{
+					DateFormat df = DateFormat.getDateInstance();
+					Date d = df.parse(date);
+					Session ps = new Session(s, p, d, eventCode, gm);
+					r.addSession(ps);
+				} catch(ParseException e)
+				{
+					e.printStackTrace();
+				}
 
 			}
 

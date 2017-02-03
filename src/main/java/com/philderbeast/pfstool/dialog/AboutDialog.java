@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class AboutDialog extends JDialog  implements ActionListener {
 
 	public AboutDialog(JFrame parent) {

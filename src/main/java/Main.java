@@ -3,15 +3,11 @@
 * @Date:   2016-08-12T18:48:59+10:00
 * @Email:  phillip@philderbeast.com
 * @Last modified by:   Phillip Ledger
-* @Last modified time: 2016-08-28T09:15:27+10:00
+* @Last modified time: 2016-12-04T00:20:13+11:00
 */
-
-import com.philderbeast.paizoscraper.*;
 import com.philderbeast.pfstool.PFSOrganiserTool;
 
 import javax.swing.*;
-
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 public class Main
 {
@@ -23,19 +19,20 @@ public class Main
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
         catch (UnsupportedLookAndFeelException e) {
-           // handle exception
+            System.err.println("Unsupported Look and feel");
         }
         catch (ClassNotFoundException e) {
-           // handle exception
+            System.err.println("Looks and Feel Not Found");
         }
         catch (InstantiationException e) {
-           // handle exception
+            System.err.println("Unable in Instatntate Look and feel");
         }
         catch (IllegalAccessException e) {
-           // handle exception
+            System.err.println("Unable in Access Look and feel");
         }
-
+        @SuppressWarnings("unused")
         PFSOrganiserTool tool = new PFSOrganiserTool();
+
     }
 
 }

@@ -12,9 +12,12 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
+import com.philderbeast.paizolib.Scenario;
+
+@SuppressWarnings("serial")
 public class ScenarioDialog extends JDialog  implements ActionListener {
 
-	public ScenarioDialog(JFrame parent, String inPlayers, ArrayList scenarioList) {
+	public ScenarioDialog(JFrame parent, String inPlayers, ArrayList<Scenario> scenarioList) {
 		super(parent, "Find Scenario for " + inPlayers, true);
 		setLocation(300,300);
 		setResizable(false);

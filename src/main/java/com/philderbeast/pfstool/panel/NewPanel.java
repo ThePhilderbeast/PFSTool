@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class NewPanel extends JPanel {
 	GridBagLayout gridBag = new GridBagLayout();
 	public JTextField tfName = new JTextField();

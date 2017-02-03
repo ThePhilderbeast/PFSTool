@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
 
+@SuppressWarnings("serial")
 public class PFSDisplay extends JPanel {
 	private int[][] stats = {{1,2,3},{4,5,6},{7,8,9},{9,8,7},{6,5,4},{3,2,1},{4,8,6},{8,4,6},{6,8,4},{8,6,6},{1,2,3},{9,8,7},{4,5,6}};
 	private int maxValue = 9;

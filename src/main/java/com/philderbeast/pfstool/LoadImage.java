@@ -6,17 +6,14 @@
 * @Last modified time: 2016-08-28T15:53:37+10:00
 */
 
-
-
 package com.philderbeast.pfstool;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
-import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class LoadImage extends Component {
 	BufferedImage img;
 

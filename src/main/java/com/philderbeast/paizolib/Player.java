@@ -7,16 +7,12 @@
 */
 package com.philderbeast.paizolib;
 
-import com.philderbeast.paizolib.*;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table
-public class Player implements Comparable<Player>, Serializable{
+public class Player implements Comparable<Player>{
 
 	@Id
 	private int pfsNumber;
@@ -26,6 +22,8 @@ public class Player implements Comparable<Player>, Serializable{
 	private String eMailAddress;
 	private String playerSessionURL;
 
+	@OneToMany(mappedBy = "player")
+	private ArrayList<Session> sessions;
 
 	public Player(){
 		pfsNumber = 0;
@@ -64,12 +62,23 @@ public class Player implements Comparable<Player>, Serializable{
 	}
 
 	public String toString(){
-		String sessPlayOut = "";
-		String sessRunOut = "";
-
 		String rtnStr = pfsNumber + "$" + givenName + "$" + surname + "$" + playerSessionURL + "\n" + eMailAddress + "\n";
 
 		return rtnStr;
+	}
+
+	public Boolean playedScenario(Scenario scenario, boolean gm)
+	{
+		//TODO: check this properly
+		//return false;
+
+		for (Session s : sessions) {
+			if (s.equals(scenario) && s.getGM() == gm){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	public int compareTo(Player p)

@@ -8,11 +8,12 @@
 package com.philderbeast.paizolib;
 
 import javax.persistence.*;
+
 import java.util.*;
 
 @Entity
 @Table
-public abstract class Session {
+public class Session {
 
 	@Id
 	@GeneratedValue
@@ -20,17 +21,47 @@ public abstract class Session {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Scenario scenario;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="player_id")
+	private Player player;
+
 	private String eventNumber;
 	private Date date;
+	private boolean gm;
 
+	public Session(Scenario scenario, Player player, Date date, String eventnumber, boolean gm)
+	{
+		this.scenario = scenario;
+		this.player = player;
+		this.date = date;
+		this.eventNumber = eventnumber;
+		this.gm = gm;
+	}
 
 	public Date getSessionDate(){
 		return date;
 	}
 
+	public Player getPlayer(){
+		return player;
+	}
 
 	public Scenario getScenario(){
 		return scenario;
 	}
+
+	public Date getDate(){
+		return date;
+	}
+
+	public String getEventNumber(){
+		return eventNumber;
+	}
+
+	public boolean getGM(){
+		return gm;
+	}
+
 
 }
