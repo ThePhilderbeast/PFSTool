@@ -8,7 +8,7 @@
     "args": [],
     "tasks": [
 		{
-			"taskName": "build",
+			"taskName": "assemble",
 			"showOutput": "silent",
 			"isBuildCommand": true,
 			"problemMatcher": {

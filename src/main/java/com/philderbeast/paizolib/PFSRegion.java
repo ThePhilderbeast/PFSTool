@@ -61,6 +61,11 @@ public class PFSRegion {
 		currentVenue.setAddress(newAddress);
 	}
 
+	//public String printEvent(int venueIndex, String eventNumber){
+	//	//TODO: fix this
+	//	return "";
+	//}
+
 	public String getName(){
 		return regionName;
 	}
