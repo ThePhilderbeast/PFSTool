@@ -1,0 +1,9 @@
+# ignore Git files
+.gradle/**
+
+# Ignore Binary outputs
+build/**
+
+
+#ignore the installer output
+PFS-installer.exe
