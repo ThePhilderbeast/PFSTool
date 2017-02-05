@@ -3,7 +3,7 @@
 
 # Ignore Binary outputs
 build/**
-
+bin/**
 
 #ignore the installer output
 PFS-installer.exe

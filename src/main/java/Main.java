@@ -5,6 +5,7 @@
 * @Last modified by:   Phillip Ledger
 * @Last modified time: 2016-12-04T00:20:13+11:00
 */
+import com.philderbeast.paizolib.PFSRegion;
 import com.philderbeast.pfstool.PFSOrganiserTool;
 
 import javax.swing.*;
@@ -30,6 +31,7 @@ public class Main
         catch (IllegalAccessException e) {
             System.err.println("Unable in Access Look and feel");
         }
+
         @SuppressWarnings("unused")
         PFSOrganiserTool tool = new PFSOrganiserTool();
 

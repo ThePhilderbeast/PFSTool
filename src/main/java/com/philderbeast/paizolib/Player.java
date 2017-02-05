@@ -22,7 +22,7 @@ public class Player implements Comparable<Player>{
 	private String eMailAddress;
 	private String playerSessionURL;
 
-	@OneToMany(mappedBy = "player")
+	//@OneToMany(mappedBy = "player")
 	private ArrayList<Session> sessions;
 
 	public Player(){
@@ -33,6 +33,7 @@ public class Player implements Comparable<Player>{
 		givenName = "given";
 		surname = "surname";
 		eMailAddress ="e@mail.com";
+		sessions = new ArrayList<Session>();
 	}
 
 	public Player(String inPFSNumber, String inURL, String inGiven, String inSur, String inEMail){
@@ -43,6 +44,7 @@ public class Player implements Comparable<Player>{
 		givenName = inGiven;
 		surname = inSur;
 		eMailAddress = inEMail;
+		sessions = new ArrayList<Session>();
 	}
 
 	public int getNumber(){

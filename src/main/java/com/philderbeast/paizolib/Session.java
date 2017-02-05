@@ -23,9 +23,7 @@ public class Session {
 	private Scenario scenario;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="player_id")
 	private Player player;
-
 	private String eventNumber;
 	private Date date;
 	private boolean gm;
@@ -46,7 +44,7 @@ public class Session {
 	public Player getPlayer(){
 		return player;
 	}
-
+	
 	public Scenario getScenario(){
 		return scenario;
 	}

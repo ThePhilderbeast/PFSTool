@@ -57,6 +57,10 @@ public class PFSHandler implements ActionListener
                     return;
                 }
 
+                region = PFSRegion.getInstance();
+                region.load(s);
+                region.getInstance();
+                /**
                 try {
                     FileInputStream fileIn = new FileInputStream(s);
                     ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -76,7 +80,7 @@ public class PFSHandler implements ActionListener
                     CNFE.printStackTrace();
                     return;
                 }
-
+                **/
                 pfstool.setTitle(region.getName() + " - Pathfinder Society Organised Play Tool");
                 ArrayList<Venue> venueList = region.getVenueList();
                 String sVenues ="Venues:";
@@ -122,7 +126,7 @@ public class PFSHandler implements ActionListener
                 String rLoc = pfstool.newPanel.tfName.getText();
                 if (! rName.equals("") & ! rLoc.equals("")){
                     pfstool.setTitle(rName + " - Pathfinder Society Organised Play Tool");
-                    region = new PFSRegion(rName,rLoc);
+                    region = PFSRegion.getInstance();
                     String[] stats = {"Region Name: " + rName,"Region Location: " + rLoc};
                     pfstool.mainInt.setStats(stats);
                     pfstool.setEnable(2);
@@ -256,7 +260,6 @@ public class PFSHandler implements ActionListener
         }
 
     }
-
     class Task extends SwingWorker<Void, Void> {
 		@Override
 		public Void doInBackground() {

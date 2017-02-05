@@ -7,8 +7,13 @@
 */
 package com.philderbeast.paizolib;
 
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
+
 import junit.framework.*;
 
+//Sadly these need to run in order
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PFSRegionTest extends TestCase{
 
 	public PFSRegionTest( String testName)
@@ -24,10 +29,33 @@ public class PFSRegionTest extends TestCase{
 	//
 	// Tests after here
 	//
-	public void testCreateNew()
+	public void test1NewRegion()
 	{
-		PFSRegion pfr = new PFSRegion("testRegion", "test location");
-		assertTrue(pfr != null); 
+		PFSRegion pfr = PFSRegion.getInstance();
+		pfr.setName("testRegion", "test location");
+		assertTrue(pfr != null);
+	}
+
+	public void test2SaveRegion()
+	{
+		PFSRegion pfr = PFSRegion.getInstance();
+		pfr.setName("testRegion", "test location");
+		pfr.writeToFile("./test.rgn");
+	}
+
+	public void test3LoadRegion()
+	{
+
+		//make sure there is a file to load
+		//testSaveRegion();
+
+		PFSRegion pfr = PFSRegion.getInstance();
+		pfr.load("./test.rgn");
+
+		//reload the instance
+		pfr = PFSRegion.getInstance();
+		System.err.println("instance name = " + pfr.getName());
+		assertTrue(pfr.getName().equals("testRegion"));
 	}
 
 }

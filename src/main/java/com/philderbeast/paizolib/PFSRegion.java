@@ -11,9 +11,16 @@ import org.hibernate.*;
 import org.hibernate.cfg.*;
 
 import java.util.*;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class PFSRegion {
 
+	@Transient
+	private static PFSRegion instance = new PFSRegion();
+
+	@Id
 	private String regionName;
 	private String location;
 	private ArrayList<Scenario> scenarioList = new ArrayList<Scenario>();
@@ -21,13 +28,43 @@ public class PFSRegion {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Session> sessions = new ArrayList<Session>();
 
-	public PFSRegion(String inName, String inLoc){
+	//hibernate vars
+	@Transient
+	private Configuration config;
+	@Transient
+	private SessionFactory sessionFactory;
+
+	private PFSRegion()
+	{
+		//singleton constructor
+	}
+
+	public static PFSRegion getInstance()
+	{
+		return instance;
+	}
+
+	public void setName(String inName, String inLoc){
 		regionName = inName;
 		location = inLoc;
 	}
 
+	public synchronized void load(String fileName)
+	{
+		configHibernate(fileName);
+		org.hibernate.Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		List<PFSRegion> prl = (List<PFSRegion>) session.createCriteria(PFSRegion.class).list();
+		if (prl.size() != 0)
+		{
+			instance = (PFSRegion) prl.get(0);
+		}
+		session.close();
+	}
+
 	public void addVenue(Venue inVenue){
 		venues.add(new Venue(inVenue));
+
 	}
 
 	public void addPlayer(Player inPlayer){
@@ -135,26 +172,23 @@ public class PFSRegion {
 
 	public void writeToFile(String fileName){
 
-		if(!(fileName.endsWith(".rgn")))
+		if (sessionFactory == null)
 		{
-			fileName += ".rgn";
+			configHibernate(fileName);
 		}
 
-		//set up hibernate
-		Configuration config = new Configuration()
-			.addAnnotatedClass(com.philderbeast.paizolib.Event.class)
-			.addAnnotatedClass(com.philderbeast.paizolib.Player.class)
-			.addAnnotatedClass(com.philderbeast.paizolib.Scenario.class)
-			.addAnnotatedClass(com.philderbeast.paizolib.Session.class)
-			.addAnnotatedClass(com.philderbeast.paizolib.Venue.class)
-			.setProperty("hibernate.dialect", 	"org.hibernate.dialect.SQLiteDialect")
-			.setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC")
-			.setProperty("hibernate.connection.url", "jdbc:sqlite:" + fileName)
-			.setProperty("hibernate.hbm2ddl.auto", "update");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
-
 		org.hibernate.Session session = sessionFactory.openSession();
+			
+			try
+			{
+				session.beginTransaction();
+				session.saveOrUpdate(this);
+				session.getTransaction().commit();
+			}catch (HibernateException e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			}
+
 			//save the players
 			for(Player p: players)
 			{
@@ -198,5 +232,29 @@ public class PFSRegion {
 			}
 
 		session.close();
+	}
+
+	private void configHibernate(String fileName)
+	{
+
+		if(!(fileName.endsWith(".rgn")))
+		{
+			fileName += ".rgn";
+		}
+
+		//set up hibernate
+		config = new Configuration()
+			.addAnnotatedClass(com.philderbeast.paizolib.PFSRegion.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Event.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Player.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Scenario.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Session.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Venue.class)
+			.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect")
+			.setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC")
+			.setProperty("hibernate.connection.url", "jdbc:sqlite:" + fileName)
+			.setProperty("hibernate.hbm2ddl.auto", "update");
+
+		sessionFactory = config.buildSessionFactory();
 	}
 }

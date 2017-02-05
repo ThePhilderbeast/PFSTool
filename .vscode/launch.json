@@ -5,13 +5,28 @@
             "name": "Java",
             "type": "java",
             "request": "launch",
-            "stopOnEntry": true,
-            "cwd": "${workspaceRoot}/build/classes/main/",
+            "stopOnEntry": false5,
+            "cwd": "${workspaceRoot}/src/main/java",
             "startupClass": "Main",
             "options": [
                 "-classpath",
-                "\"${workspaceRoot}/build/classes/main/;.\""
-            ]
-        }
+                "${workspaceRoot}/build/classes/main/"
+            ],
+            "externalConsole": true
+        },
+        {
+            "name": "Java Console App",
+            "type": "java",
+            "request": "launch",
+            "stopOnEntry": true,
+            "cwd": "${fileDirname}",
+            "startupClass": "${fileBasename}",
+            "options": [
+              "-classpath",
+              "\"${fileDirname};.\""
+            ],
+            "externalConsole": true
+          }
     ]
+
 }
