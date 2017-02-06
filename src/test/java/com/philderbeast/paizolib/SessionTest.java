@@ -11,9 +11,6 @@ import junit.framework.*;
 
 import java.util.Date;
 
-
-import com.philderbeast.paizolib.*;
-
 public class SessionTest extends TestCase
 {
 

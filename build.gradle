@@ -23,6 +23,10 @@ task runDebug(type: JavaExec) {
     main = mainClassName
 }
 
+tasks.withType(JavaCompile) {
+  options.compilerArgs << "-Xlint:deprecation" << "-Werror"
+}
+
 repositories {
     mavenCentral()
 }
