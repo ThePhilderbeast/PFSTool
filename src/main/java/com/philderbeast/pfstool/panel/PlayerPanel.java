@@ -12,6 +12,7 @@ import com.philderbeast.paizoscraper.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -60,32 +61,33 @@ public class PlayerPanel extends JPanel implements ActionListener {
 		p = playerToDisplay;
 
 		//TODO: fix all of this
-		//ArrayList<Session> sessionsPlayed = playerToDisplay.getSessionsPlayed();
-		//ArrayList<PlayerSession> sessionsRun = playerToDisplay.getSessionsRun();
+		ArrayList<Session> sessionsPlayed = playerToDisplay.getSessionsPlayed();
+		ArrayList<Session> sessionsRun = playerToDisplay.getSessionsRun();
 
 		lblName.setText(playerToDisplay.getName());
 		lblNumber.setText("PFS Number: " + playerToDisplay.getNumber());
 		lblEmail.setText("eMail Address: " + playerToDisplay.getEMail());
-		//lblNumSession.setText("Sessions Played: " + sessionsPlayed.size());
+		lblNumSession.setText("Sessions Played: " + sessionsPlayed.size());
+		//TODO: show gm credit
 		//lblCredit.setText("Total Credit: " + playerToDisplay.getGMCredit());
-		//lblNumScenariosRun.setText("Total Scenarios Run: " + sessionsRun.size());
+		lblNumScenariosRun.setText("Total Scenarios Run: " + sessionsRun.size());
 
 		//blank out the feilds before adding the new data
 		pPlayed.setText("Scenarios Played:-\n\n");
 		pRun.setText("Scenarios Run:-\n\n");
 
 		//get the names of all the scernarios that have been played
-		//for (PlayerSession ps : sessionsPlayed)
-		//{
-		//	pPlayed.append(ps.scenarioName + "\n");
-		//}
+		for (Session ps : sessionsPlayed)
+		{
+			pPlayed.append(ps.getScenario() + "\n");
+		}
 		pPlayed.setCaretPosition(0);
 
 		//get the names of all the scernarios that have been played
-		//for (PlayerSession ps : sessionsRun)
-		//{
-		//	pRun.append(ps.scenarioName + "\n");
-		//}
+		for (Session ps : sessionsRun)
+		{
+			pRun.append(ps.getScenario() + "\n");
+		}
 		pRun.setCaretPosition(0);
 	}
 

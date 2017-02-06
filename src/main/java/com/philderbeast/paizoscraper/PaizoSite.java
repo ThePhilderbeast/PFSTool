@@ -17,9 +17,7 @@ import org.openqa.selenium.htmlunit.*;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-
-
-
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.*;
@@ -43,7 +41,7 @@ public class PaizoSite
 	}
 
 	//need to think about this more
-	public void parseList(ArrayList<Player> playerList, PFSRegion r)
+	public void parseList(Set<Player> playerList, PFSRegion r)
 	{
 
 		progress.progressStart(100, "logging in to Paizo");
@@ -63,7 +61,6 @@ public class PaizoSite
 
 		for(Object o: playerList)
 		{
-
 			Player p = (Player) o;
 
 			if(p.getSessURL() != null)
@@ -106,7 +103,7 @@ public class PaizoSite
 
 	private void parseScenario(Document doc, Player p, PFSRegion r, boolean updateProgress)
 	{
-		String eventCode;;
+		String eventCode;
 		String scenarioName;
 		String date;
 		Boolean gm;
@@ -134,7 +131,7 @@ public class PaizoSite
 
 				//convert to a java date format
 				try{
-					DateFormat df = DateFormat.getDateInstance();
+					DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
 					Date d = df.parse(date);
 					Session ps = new Session(s, p, d, eventCode, gm);
 					r.addSession(ps);

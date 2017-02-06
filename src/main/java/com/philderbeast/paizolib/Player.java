@@ -22,8 +22,8 @@ public class Player implements Comparable<Player>{
 	private String eMailAddress;
 	private String playerSessionURL;
 
-	//@OneToMany(mappedBy = "player")
-	private ArrayList<Session> sessions;
+	@OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
+	private List<Session> sessions;
 
 	public Player(){
 		pfsNumber = 0;
@@ -64,22 +64,59 @@ public class Player implements Comparable<Player>{
 	}
 
 	public String toString(){
-		String rtnStr = pfsNumber + "$" + givenName + "$" + surname + "$" + playerSessionURL + "\n" + eMailAddress + "\n";
+		String rtnStr = pfsNumber + " - " + givenName + " " + surname + "\n";
 
 		return rtnStr;
 	}
 
-	public Boolean playedScenario(Scenario scenario, boolean gm)
+	public ArrayList<Session> getSessionsPlayed()
 	{
-		//TODO: check this properly
-		//return false;
+
+		ArrayList<Session> played = new ArrayList<Session>();
+
+		for (Session s : sessions) {
+			if (!s.getGM())
+			{
+				played.add(s);
+			}	
+		}
+
+		return played;
+	}
+
+	public ArrayList<Session> getSessionsRun()
+	{
+
+		ArrayList<Session> run = new ArrayList<Session>();
+
+		for (Session s : sessions) {
+			if (s.getGM())
+			{
+				run.add(s);
+			}	
+		}
+
+		return run;
+	}
+
+	public boolean playedScenario(Scenario scenario, boolean gm)
+	{
 
 		for (Session s : sessions) {
 			if (s.equals(scenario) && s.getGM() == gm){
 				return true;
 			}
-		}
-		
+		}		
+		return false;
+	}
+
+	public boolean isGM()
+	{
+		for (Session s : sessions) {
+			if (s.getGM()){
+				return true;
+			}
+		}		
 		return false;
 	}
 

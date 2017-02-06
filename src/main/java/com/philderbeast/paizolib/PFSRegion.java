@@ -12,6 +12,7 @@ import org.hibernate.cfg.*;
 
 import java.util.*;
 import javax.persistence.*;
+import javax.persistence.criteria.*;
 
 @Entity
 @Table
@@ -21,12 +22,17 @@ public class PFSRegion {
 	private static PFSRegion instance = new PFSRegion();
 
 	@Id
+	@Column(nullable = false, unique = true)
 	private String regionName;
 	private String location;
-	private ArrayList<Scenario> scenarioList = new ArrayList<Scenario>();
-	private ArrayList<Venue> venues = new ArrayList<Venue>();
-	private ArrayList<Player> players = new ArrayList<Player>();
-	private ArrayList<Session> sessions = new ArrayList<Session>();
+	@OneToMany(fetch = FetchType.EAGER)
+	private Set<Scenario> scenarioList = new TreeSet<Scenario>();
+	@OneToMany(fetch = FetchType.EAGER)
+	private Set<Venue> venues = new TreeSet<Venue>();
+	@OneToMany(fetch = FetchType.EAGER)
+	private Set<Player> players = new TreeSet<Player>();
+	@OneToMany(fetch = FetchType.EAGER)
+	private Set<Session> sessions = new TreeSet<Session>();
 
 	//hibernate vars
 	@Transient
@@ -49,19 +55,6 @@ public class PFSRegion {
 		location = inLoc;
 	}
 
-	public synchronized void load(String fileName)
-	{
-		configHibernate(fileName);
-		org.hibernate.Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		List<PFSRegion> prl = (List<PFSRegion>) session.createCriteria(PFSRegion.class).list();
-		if (prl.size() != 0)
-		{
-			instance = (PFSRegion) prl.get(0);
-		}
-		session.close();
-	}
-
 	public void addVenue(Venue inVenue){
 		venues.add(new Venue(inVenue));
 
@@ -76,6 +69,7 @@ public class PFSRegion {
 	public void addScenario(Scenario s) {
 		if (!scenarioList.contains(s))
 		{
+			System.out.println("adding scenario " + s.name);
 			scenarioList.add(s);
 		}
 	}
@@ -84,18 +78,9 @@ public class PFSRegion {
 	{
 		if (!sessions.contains(s))
 		{
+			System.out.println("adding session scenario: " + s.getScenario() + " player: " + s.getPlayer());
 			sessions.add(s);
 		}
-	}
-
-	public void renameVenue(int venueIndex, String newName){
-		Venue currentVenue = (Venue) venues.get(venueIndex);
-		currentVenue.changeName(newName);
-	}
-
-	public void moveVenue(int venueIndex, String newAddress){
-		Venue currentVenue = (Venue) venues.get(venueIndex);
-		currentVenue.setAddress(newAddress);
 	}
 
 	public String getName(){
@@ -106,18 +91,18 @@ public class PFSRegion {
 		return location;
 	}
 
-	public ArrayList<Player> getPlayerList(){
-		return players;
+	public Set<Player> getPlayerList(){
+		return (Set<Player>) players;
 	}
 
-	public ArrayList<Scenario> getScenarios()
+	public Set<Scenario> getScenarios()
 	{
-		return scenarioList;
+		return (Set<Scenario>) scenarioList;
 	}
 
-	public ArrayList<Venue> getVenueList()
+	public Set<Venue> getVenueList()
 	{
-		return venues;
+		return (Set<Venue>) venues; 
 	}
 
 	public int getVenueIndex(String venueName) {
@@ -137,8 +122,14 @@ public class PFSRegion {
 	}
 
 	public int getNumGMs(){
-		//TODO: get the acctual number of GM's
-		return 0;
+		int i = 0;
+		for (Player p : players) {
+			if (p.isGM())
+			{
+				i++;
+			}
+		}
+		return i;
 	}
 
 	public int getNumVenues(){
@@ -150,9 +141,23 @@ public class PFSRegion {
 	}
 
 	public Player getPlayer(int PFSNumber){
-		//TODO: get the acctual PFS number
-		
+		for (Player p: players) {
+			if (p.getNumber() == PFSNumber)
+			{
+				return p;
+			}
+		}
 		return null;
+	}
+
+	public void renameVenue(int venueIndex, String newName){
+		Venue currentVenue = (Venue) venues.toArray()[venueIndex];
+		currentVenue.changeName(newName);
+	}
+
+	public void moveVenue(int venueIndex, String newAddress){
+		Venue currentVenue = (Venue) venues.toArray()[venueIndex];
+		currentVenue.setAddress(newAddress);
 	}
 
 	public String toString(){
@@ -161,13 +166,37 @@ public class PFSRegion {
 
 		rtnStr = regionName + "\n" + location + "\n" + venues.size() + "$" + players.size() + "\n";
 		for (short i = 0; i < venues.size(); i ++) {
-			currentVenue = (Venue) venues.get(i);
+			currentVenue = (Venue) venues.toArray()[i];
 			rtnStr += currentVenue;
 		}
 
 		rtnStr += "\n" + players;
 
 		return rtnStr.trim();
+	}
+
+	private void configHibernate(String fileName)
+	{
+
+		if(!(fileName.endsWith(".rgn")))
+		{
+			fileName += ".rgn";
+		}
+
+		//set up hibernate
+		config = new Configuration()
+			.addAnnotatedClass(com.philderbeast.paizolib.PFSRegion.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Event.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Player.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Scenario.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Session.class)
+			.addAnnotatedClass(com.philderbeast.paizolib.Venue.class)
+			.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect")
+			.setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC")
+			.setProperty("hibernate.connection.url", "jdbc:sqlite:" + fileName)
+			.setProperty("hibernate.hbm2ddl.auto", "update");
+
+		sessionFactory = config.buildSessionFactory();
 	}
 
 	public void writeToFile(String fileName){
@@ -234,27 +263,26 @@ public class PFSRegion {
 		session.close();
 	}
 
-	private void configHibernate(String fileName)
+	public synchronized void load(String fileName)
 	{
+		configHibernate(fileName);
+		org.hibernate.Session session = sessionFactory.openSession();
+		session.beginTransaction();
 
-		if(!(fileName.endsWith(".rgn")))
+		//load the PFSRegion
+		CriteriaBuilder cb =  session.getCriteriaBuilder();
+		CriteriaQuery<PFSRegion> cq = cb.createQuery(PFSRegion.class);
+		cq.select(cq.from(PFSRegion.class));
+		TypedQuery<PFSRegion> q = session.createQuery(cq);
+
+		List<PFSRegion> results = q.getResultList();
+
+		if (results.size() > 0)
 		{
-			fileName += ".rgn";
+			//replace the singleton with the loaded value
+			instance = q.getResultList().get(0);
 		}
-
-		//set up hibernate
-		config = new Configuration()
-			.addAnnotatedClass(com.philderbeast.paizolib.PFSRegion.class)
-			.addAnnotatedClass(com.philderbeast.paizolib.Event.class)
-			.addAnnotatedClass(com.philderbeast.paizolib.Player.class)
-			.addAnnotatedClass(com.philderbeast.paizolib.Scenario.class)
-			.addAnnotatedClass(com.philderbeast.paizolib.Session.class)
-			.addAnnotatedClass(com.philderbeast.paizolib.Venue.class)
-			.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect")
-			.setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC")
-			.setProperty("hibernate.connection.url", "jdbc:sqlite:" + fileName)
-			.setProperty("hibernate.hbm2ddl.auto", "update");
-
-		sessionFactory = config.buildSessionFactory();
+		session.close();
 	}
+
 }
